@@ -191,8 +191,8 @@ local function copy()
     local filePath = mp.get_property_native('path')
 	if (filePath ~= nil) then
 		local time = math.floor(mp.get_property_number('time-pos'))
-		set_clipboard(filePath..' |time='..tostring(time))
-		mp.osd_message("Copied:\n"..filePath..' |time='..tostring(time))
+		set_clipboard(filePath..'&t='..tostring(time))
+		mp.osd_message("Copied:\n"..filePath..'&t='..tostring(time))
 	else
 		mp.osd_message('Failed to Copy\nNo Video Found')
 	end
@@ -218,9 +218,9 @@ function paste()
 	local filePath = mp.get_property_native('path')
 	local time
 
-	if string.match(clip, '(.*) |time=') then
-		videoFile = string.match(clip, '(.*) |time=')
-		time = string.match(clip, ' |time=(.*)')
+	if string.match(clip, '(.*)&t=') then
+		videoFile = string.match(clip, '(.*)&t=')
+		time = string.match(clip, '&t=(.*)')
 	elseif string.match(clip, '^\"(.*)\"$') then
 		videoFile = string.match(clip, '^\"(.*)\"$')
 	else
@@ -258,8 +258,8 @@ function paste_playlist()
 	
 	local filePath = mp.get_property_native('path')
 
-	if string.match(clip, '(.*) |time=') then
-		videoFile = string.match(clip, '(.*) |time=')
+	if string.match(clip, '(.*)&t=') then
+		videoFile = string.match(clip, '(.*)&t=')
 	elseif string.match(clip, '^\"(.*)\"$') then
 		videoFile = string.match(clip, '^\"(.*)\"$')
 	else
@@ -287,8 +287,8 @@ end)
 mp.register_event('file-loaded', function()
 	if (pasted == true) then
 		local clip = get_clipboard()
-		local time = string.match(clip, ' |time=(.*)')
-		local videoFile = string.match(clip, '(.*) |time=')
+		local time = string.match(clip, '&t=(.*)')
+		local videoFile = string.match(clip, '(.*)&t=')
 		local filePath = mp.get_property_native('path')
 
 		if (filePath == videoFile) and (time ~= nil) then
